@@ -1,78 +1,18 @@
 
-# coding: utf-8
-
-# In[1]:
-
 import numpy as np
-
-
-# In[2]:
-
-myList=[0,1,2,3,4,5]
-
-
-# In[ ]:
-
-def createList(size):
-    myList=[]
-    for i in range(size):
-        myList.append(i)
-    return myList
-def listIncrement(l,n):
-    myL=[]
-    for i in range(len(l)):
-        myL.append(l[i]+n)
-    return myL
-L_1=createList(5)
-L_1
-L_2=listIncrement(L_1,5)
-L_2
-
-
-# In[ ]:
-
-#createList(500)
-get_ipython().magic(u'timeit myL_1=listIncrement(createList(9000000),50)')
-
-
-# In[ ]:
-
-get_ipython().magic(u'timeit np.arange(9000000)+1')
-
-
-# In[ ]:
-
-size=10
-my_10=np.arange(size)
-my_10
-
-
-# In[ ]:
-
-my_10+1
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
+import matplotlib.pyplot as plt
+def createCircularMask(h, w, center=None, radius=None):
+if center is None: # use the middle of the image
+center = [int(w/2), int(h/2)]
+if radius is None: # use the smallest distance between the center and image walls
+radius = min(center[0], center[1], w-center[0], h-center[1])
+y, x = np.ogrid[:h, :w]
+dist_from_center = np.sqrt((x - center[0])**2 + (y-center[1])**2)
+mask = dist_from_center <= radius
+return mask
+img = plt.imread("image.jpg")
+h, w = img.shape[:2]
+radius = h/4
+mask = createCircularMask(h, w, radius=radius)
+img[~mask] = 0
+plt.imsave("image2.jpg", img, cmap="gray")
